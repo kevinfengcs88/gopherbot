@@ -1,0 +1,4 @@
+{
+    "help": "Display all available commands and a brief description of what they do",
+    "ping": "Responds to the channel with \"pong\""
+}

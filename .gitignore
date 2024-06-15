@@ -1,0 +1,13 @@
+.env
+*.env
+nohup.out
+
+# Go binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Executables
+bin/
