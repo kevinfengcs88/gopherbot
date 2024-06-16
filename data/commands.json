@@ -1,4 +1,7 @@
 {
     "help": "Display all available commands and a brief description of what they do",
-    "ping": "Responds to the channel with \"pong\""
+    "ping": "Responds to the channel with \"pong\"",
+    "status": "Fetches the status of the SOTF dedicated server",
+    "start": "Starts the SOTF dedicated server",
+    "stop": "Brings down the SOTF dedicated server"
 }

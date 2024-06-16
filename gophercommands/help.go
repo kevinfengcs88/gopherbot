@@ -3,17 +3,15 @@ package gophercommands
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/bwmarrin/discordgo"
 	"io"
 	"log"
 	"os"
+	"strings"
+
+	"github.com/bwmarrin/discordgo"
 )
 
 func Help(s *discordgo.Session, m *discordgo.MessageCreate) {
-	type CommandsMap map[string]string
-
-	// try using interface method instead???
-	// to simulate unknown type and depth of this data
 	commandsFile, err := os.Open("data/commands.json")
 	if err != nil {
 		log.Fatalf("Failed to open the file: %s", err)
@@ -25,14 +23,19 @@ func Help(s *discordgo.Session, m *discordgo.MessageCreate) {
 		log.Fatalf("Failed to read the file: %s", err)
 	}
 
-	var commands CommandsMap
+	var commands map[string]string
 	if err := json.Unmarshal(byteValue, &commands); err != nil {
 		log.Fatalf("Failed to unmarshal JSON: %s", err)
 	}
 
+	var helpOutput string
+	var builder strings.Builder
+
 	for key, value := range commands {
-		fmt.Printf("%s: %s\n", key, value)
+		builder.WriteString(fmt.Sprintf("%s: %s\n", key, value))
 	}
 
-	s.ChannelMessageSend(m.ChannelID, "Help contents printed to terminal, sir")
+	helpOutput = builder.String()
+
+	s.ChannelMessageSend(m.ChannelID, helpOutput)
 }
