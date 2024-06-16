@@ -2,15 +2,13 @@ package main
 
 import (
 	"fmt"
+	"github.com/bwmarrin/discordgo"
+	"github.com/joho/godotenv"
+	"gopherbot/gophercommands"
+	"gopherbot/gopherutils"
 	"os"
 	"os/signal"
 	"syscall"
-
-	"github.com/bwmarrin/discordgo"
-	"github.com/joho/godotenv"
-
-	"gopherbot/gophercommands"
-	"gopherbot/gopherutils"
 )
 
 func main() {
