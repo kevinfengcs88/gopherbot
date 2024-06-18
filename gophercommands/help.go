@@ -30,9 +30,13 @@ func Help(s *discordgo.Session, m *discordgo.MessageCreate) {
 	var helpOutput string
 	var builder strings.Builder
 
+	builder.WriteString("```\n")
+
 	for key, value := range commands {
 		builder.WriteString(fmt.Sprintf("%s: %s\n", key, value))
 	}
+
+	builder.WriteString("```\n")
 
 	helpOutput = builder.String()
 

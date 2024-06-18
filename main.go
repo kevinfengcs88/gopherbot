@@ -58,5 +58,11 @@ func handleMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
 		gophercommands.Ping(s, m)
 	case "help":
 		gophercommands.Help(s, m)
+	case "serverstatus":
+		gophercommands.ServerStatus(s, m)
+	case "serverstart":
+		gophercommands.ServerStart(s, m)
+	case "serverstop":
+		gophercommands.ServerStop(s, m)
 	}
 }
