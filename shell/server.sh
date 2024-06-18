@@ -18,11 +18,8 @@ start() {
     # implement a check to see if the server is already running
     # cd /mnt/c/Users/Kevin/Desktop/sotf/server && cmd.exe /c StartSOTFDedicated.bat
     # also check after this command that the server truly started
-    
-
 
     # new stuff
-
 
     # make sure that log file and named pipe exist
     mkdir -p "$(pwd)/logs"
@@ -43,14 +40,15 @@ start() {
 
     wait
     # get rid of carriage returns (^M)
-    dos2unix "$log_file"
+    dos2unix "$log_file" > /dev/null 2>&1
     # get rid of zero width characters (<feff>)
     sed -i 's/\xEF\xBB\xBF//g' "$log_file"
 }
 
 stop() {
     # implement a check to see if the server is already down
-    taskkill.exe /IM SonsOfTheForestDS.exe /F
+    stdout=$(taskkill.exe /IM SonsOfTheForestDS.exe /F)
+    echo "$stdout"
     # also check after this command that the server truly terminated
 }
 

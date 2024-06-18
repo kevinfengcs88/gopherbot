@@ -28,8 +28,7 @@ func ServerStart(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if err != nil {
 		log.Fatalf("Error executing server.sh start: %v", err)
 	}
-
-	fmt.Println(string(stdout))
+	s.ChannelMessageSend(m.ChannelID, string(stdout))
 }
 
 func ServerStop(s *discordgo.Session, m *discordgo.MessageCreate) {
@@ -40,6 +39,5 @@ func ServerStop(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if err != nil {
 		log.Fatalf("Error executing server.sh stop: %v", err)
 	}
-
-	fmt.Println(string(stdout))
+	s.ChannelMessageSend(m.ChannelID, string(stdout))
 }
