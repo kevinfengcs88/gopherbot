@@ -3,11 +3,12 @@ package gophercommands
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/bwmarrin/discordgo"
 	"io"
 	"log"
 	"os"
 	"strings"
+
+	"github.com/bwmarrin/discordgo"
 )
 
 func Help(s *discordgo.Session, m *discordgo.MessageCreate) {

@@ -2,8 +2,10 @@ package gophercommands
 
 import (
 	"fmt"
+	"gopherbot/gopherutils"
 	"log"
 	"os/exec"
+	"regexp"
 
 	"github.com/bwmarrin/discordgo"
 )
@@ -17,7 +19,15 @@ func ServerStatus(s *discordgo.Session, m *discordgo.MessageCreate) {
 		log.Fatalf("Error executing server.sh status: %v", err)
 		s.ChannelMessageSend(m.ChannelID, fmt.Sprintf("Error executing server.sh status: %v", err))
 	}
-	s.ChannelMessageSend(m.ChannelID, string(stdout))
+	serverStatus := gopherutils.CleanedBytesToString(stdout)
+	serverDownPattern := regexp.MustCompile(`\w+:\sDOWN`)
+	serverDownMatch := serverDownPattern.MatchString(serverStatus)
+	if serverDownMatch {
+		serverStatus = gopherutils.Redify(serverStatus)
+	} else {
+		serverStatus = gopherutils.Greenify(serverStatus)
+	}
+	s.ChannelMessageSend(m.ChannelID, serverStatus)
 }
 
 func ServerStart(s *discordgo.Session, m *discordgo.MessageCreate) {

@@ -9,6 +9,10 @@ func RemovePrefix(command string) string {
 	return command[1:]
 }
 
+func CleanedBytesToString(b []byte) string {
+	return strings.TrimSpace(string(b))
+}
+
 func Redify(input string) string {
 	var builder strings.Builder
 	builder.WriteString("```diff\n")
