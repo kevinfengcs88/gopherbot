@@ -19,8 +19,8 @@ clean_log() {
 
 status() {
     log_check
-    stdout=$(tasklist.exe | grep "SonsOfTheForestDS.exe")
-    if [ -n "$stdout" ]; then
+    status_check=$(tasklist.exe | grep "SonsOfTheForestDS.exe")
+    if [ -n "$status_check" ]; then
         echo "Server status: UP"
         echo "$(date '+%Y-%m-%d %H:%M:%S') gopherbot Server status: UP" >> "$log_file"
     else
@@ -31,12 +31,10 @@ status() {
 }
 
 start() {
-    # implement a check to see if the server is already running
     # cd /mnt/c/Users/Kevin/Desktop/sotf/server && cmd.exe /c StartSOTFDedicated.bat
-    # also check after this command that the server truly started
 
-    # new stuff
-
+    # implement a check to see if the server is already running
+    
     # make sure that log file and named pipe exist
     log_check
     fifo_file="/tmp/server_output_fifo"
@@ -55,17 +53,25 @@ start() {
 
     wait
     clean_log
+    # also check after this command that the server truly started
 }
 
 stop() {
-    log_check
-    # implement a check to see if the server is already down
-    stdout=$(taskkill.exe /IM SonsOfTheForestDS.exe /F)
-    echo "$stdout"
-    echo "$(date '+%Y-%m-%d %H:%M:%S') gopherbot (LOG) $stdout" >> "$log_file"
-    echo "================================================================================================================================================================" >> "$log_file"
-    # also check after this command that the server truly terminated
-    clean_log
+    status_check=$(tasklist.exe | grep "SonsOfTheForestDS.exe")
+    if [ -n "$status_check" ]; then
+        log_check
+        stdout=$(taskkill.exe /IM SonsOfTheForestDS.exe /F)
+        echo "$stdout"
+        echo "$(date '+%Y-%m-%d %H:%M:%S') gopherbot (LOG) $stdout" >> "$log_file"
+        echo "================================================================================================================================================================" >> "$log_file"
+        status_check=$(tasklist.exe | grep "SonsOfTheForestDS.exe")
+        if [ -n "$status_check" ]; then
+            echo "Something went wrong, the server is still up! Oh no!"
+        fi
+        clean_log
+    else
+        echo "The server is already down"
+    fi
 }
 
 if [ $# -ne 1 ]; then
