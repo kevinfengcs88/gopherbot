@@ -1,5 +1,7 @@
 #!/bin/bash
 
+log_file="$(pwd)/logs/sotf.log"
+
 usage() {
     echo "Usage: $0 {status|start|stop}"
     exit 1
@@ -23,7 +25,6 @@ start() {
 
     # make sure that log file and named pipe exist
     mkdir -p "$(pwd)/logs"
-    log_file="$(pwd)/logs/sotf.log"
     fifo_file="/tmp/server_output_fifo"
 
     # create named pipe
@@ -35,7 +36,7 @@ start() {
     (cd /mnt/c/Users/Kevin/Desktop/sotf/server && cmd.exe /c StartSOTFDedicated.bat > "$fifo_file" 2>&1) &
 
     while IFS= read -r line; do
-        echo "$line" >> "$log_file"
+        echo "$(date '+%Y-%m-%d %H:%M:%S') $line" >> "$log_file"
     done < "$fifo_file"
 
     wait
@@ -49,6 +50,7 @@ stop() {
     # implement a check to see if the server is already down
     stdout=$(taskkill.exe /IM SonsOfTheForestDS.exe /F)
     echo "$stdout"
+    echo "$(date '+%Y-%m-%d %H:%M:%S') $stdout" > "$log_file"
     # also check after this command that the server truly terminated
 }
 

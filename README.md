@@ -14,6 +14,7 @@ is emu, but in gopher form
 - When starting the server, somehow read the stdout of the server for more granular status
     - Until "Dedicated server loaded" comes up, the server status should be "starting up" rather than "UP"
     - ALSO prevent this from printing in a random order each time
+- Use channels and goroutines for umm menu (so multiple users can use it)
 
 ### Misc
 
