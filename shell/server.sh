@@ -7,7 +7,18 @@ usage() {
     exit 1
 }
 
+log_check() {
+    mkdir -p "$(pwd)/logs"
+    touch "$log_file"
+}
+
+clean_log() {
+    dos2unix "$log_file" > /dev/null 2>&1
+    sed -i 's/\xEF\xBB\xBF//g' "$log_file"
+}
+
 status() {
+    log_check
     stdout=$(tasklist.exe | grep "SonsOfTheForestDS.exe")
     if [ -n "$stdout" ]; then
         echo "Server status: UP"
@@ -16,6 +27,7 @@ status() {
         echo "Server status: DOWN"
         echo "$(date '+%Y-%m-%d %H:%M:%S') gopherbot Server status: DOWN" >> "$log_file"
     fi
+    clean_log
 }
 
 start() {
@@ -26,7 +38,7 @@ start() {
     # new stuff
 
     # make sure that log file and named pipe exist
-    mkdir -p "$(pwd)/logs"
+    log_check
     fifo_file="/tmp/server_output_fifo"
 
     # create named pipe
@@ -42,18 +54,18 @@ start() {
     done < "$fifo_file"
 
     wait
-    # get rid of carriage returns (^M)
-    dos2unix "$log_file" > /dev/null 2>&1
-    # get rid of zero width characters (<feff>)
-    sed -i 's/\xEF\xBB\xBF//g' "$log_file"
+    clean_log
 }
 
 stop() {
+    log_check
     # implement a check to see if the server is already down
     stdout=$(taskkill.exe /IM SonsOfTheForestDS.exe /F)
     echo "$stdout"
     echo "$(date '+%Y-%m-%d %H:%M:%S') gopherbot (LOG) $stdout" >> "$log_file"
+    echo "================================================================================================================================================================" >> "$log_file"
     # also check after this command that the server truly terminated
+    clean_log
 }
 
 if [ $# -ne 1 ]; then
