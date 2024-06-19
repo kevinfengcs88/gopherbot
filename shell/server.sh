@@ -50,7 +50,7 @@ stop() {
     # implement a check to see if the server is already down
     stdout=$(taskkill.exe /IM SonsOfTheForestDS.exe /F)
     echo "$stdout"
-    echo "$(date '+%Y-%m-%d %H:%M:%S') $stdout" > "$log_file"
+    echo "$(date '+%Y-%m-%d %H:%M:%S') $stdout" >> "$log_file"
     # also check after this command that the server truly terminated
 }
 
