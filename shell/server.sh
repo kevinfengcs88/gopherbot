@@ -33,27 +33,26 @@ status() {
 start() {
     # cd /mnt/c/Users/Kevin/Desktop/sotf/server && cmd.exe /c StartSOTFDedicated.bat
 
-    # implement a check to see if the server is already running
-    
-    # make sure that log file and named pipe exist
-    log_check
-    fifo_file="/tmp/server_output_fifo"
+    status_check=$(tasklist.exe | grep "SonsOfTheForestDS.exe")
+    if [ -n "$status_check" ]; then
+        echo "The server is already up"
+    else
+        log_check
+        fifo_file="/tmp/server_output_fifo"
 
-    # create named pipe
-    if [[ ! -p "$fifo_file" ]]; then
-        mkfifo "$fifo_file"
+        if [[ ! -p "$fifo_file" ]]; then
+            mkfifo "$fifo_file"
+        fi
+
+        (cd /mnt/c/Users/Kevin/Desktop/sotf/server && cmd.exe /c StartSOTFDedicated.bat > "$fifo_file" 2>&1) &
+
+        while IFS= read -r line; do
+            echo "$(date '+%Y-%m-%d %H:%M:%S') $line" >> "$log_file"
+        done < "$fifo_file"
+
+        wait
+        clean_log
     fi
-
-    # run the command in Windows mnt and redirect output to the named pipe
-    (cd /mnt/c/Users/Kevin/Desktop/sotf/server && cmd.exe /c StartSOTFDedicated.bat > "$fifo_file" 2>&1) &
-
-    while IFS= read -r line; do
-        echo "$(date '+%Y-%m-%d %H:%M:%S') $line" >> "$log_file"
-    done < "$fifo_file"
-
-    wait
-    clean_log
-    # also check after this command that the server truly started
 }
 
 stop() {
@@ -64,10 +63,6 @@ stop() {
         echo "$stdout"
         echo "$(date '+%Y-%m-%d %H:%M:%S') gopherbot (LOG) $stdout" >> "$log_file"
         echo "================================================================================================================================================================" >> "$log_file"
-        status_check=$(tasklist.exe | grep "SonsOfTheForestDS.exe")
-        if [ -n "$status_check" ]; then
-            echo "Something went wrong, the server is still up! Oh no!"
-        fi
         clean_log
     else
         echo "The server is already down"

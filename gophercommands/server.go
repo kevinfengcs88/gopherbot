@@ -38,7 +38,13 @@ func ServerStart(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if err != nil {
 		log.Fatalf("Error executing server.sh start: %v", err)
 	}
-	s.ChannelMessageSend(m.ChannelID, string(stdout))
+	output := gopherutils.CleanedBytesToString(stdout)
+	serverUpPattern := regexp.MustCompile(`(?i)up`)
+	serverUpMatch := serverUpPattern.MatchString(output)
+	if serverUpMatch {
+		output = gopherutils.Greenify(output)
+	}
+	s.ChannelMessageSend(m.ChannelID, output)
 }
 
 func ServerStop(s *discordgo.Session, m *discordgo.MessageCreate) {
