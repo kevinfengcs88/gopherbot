@@ -40,7 +40,7 @@ func ServerStart(s *discordgo.Session, m *discordgo.MessageCreate) {
 		log.Fatalf("Error executing server.sh start: %v", err)
 	}
 
-	// this ain't working cuh
+	// this shee broken ong frfr no skibidi cap, cuh ohio
 	ServerStatus(s, m)
 }
 
