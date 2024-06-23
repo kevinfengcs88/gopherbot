@@ -13,6 +13,8 @@ is emu, but in gopher form
     - use fsnotify for this
 - Use channels and goroutines for umm menu (so multiple users can use it)
 - Make output colors consistent (SUCCESS is still neutral text as an example)
+- Redirect all log.Fatalf to the sotf.log
+- Have !start command perform a status after trying to start the server
 
 ### Misc
 

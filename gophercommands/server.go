@@ -10,8 +10,10 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
+var serverScript string = "/home/kevinfengcs88/go/src/gopherbot/shell/server.sh"
+
 func ServerStatus(s *discordgo.Session, m *discordgo.MessageCreate) {
-	cmd := exec.Command("/home/kevinfengcs88/go/src/gopherbot/shell/server.sh", "status")
+	cmd := exec.Command(serverScript, "status")
 
 	stdout, err := cmd.CombinedOutput()
 	if err != nil {
@@ -31,24 +33,20 @@ func ServerStatus(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 func ServerStart(s *discordgo.Session, m *discordgo.MessageCreate) {
 	s.ChannelMessageSend(m.ChannelID, "Attempting to start the server...")
-	cmd := exec.Command("/home/kevinfengcs88/go/src/gopherbot/shell/server.sh", "start")
+	cmd := exec.Command(serverScript, "start")
 
-	stdout, err := cmd.CombinedOutput()
+	_, err := cmd.CombinedOutput()
 	if err != nil {
 		log.Fatalf("Error executing server.sh start: %v", err)
 	}
-	output := gopherutils.CleanedBytesToString(stdout)
-	serverUpPattern := regexp.MustCompile(`(?i)up`)
-	serverUpMatch := serverUpPattern.MatchString(output)
-	if serverUpMatch {
-		output = gopherutils.Greenify(output)
-	}
-	s.ChannelMessageSend(m.ChannelID, output)
+
+	// this ain't working cuh
+	ServerStatus(s, m)
 }
 
 func ServerStop(s *discordgo.Session, m *discordgo.MessageCreate) {
 	s.ChannelMessageSend(m.ChannelID, "Attempting to stop the server...")
-	cmd := exec.Command("/home/kevinfengcs88/go/src/gopherbot/shell/server.sh", "stop")
+	cmd := exec.Command(serverScript, "stop")
 
 	stdout, err := cmd.CombinedOutput()
 	if err != nil {
