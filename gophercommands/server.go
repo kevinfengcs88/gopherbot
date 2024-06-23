@@ -6,6 +6,7 @@ import (
 	"log"
 	"os/exec"
 	"regexp"
+	"strings"
 
 	"github.com/bwmarrin/discordgo"
 )
@@ -57,6 +58,8 @@ func ServerStop(s *discordgo.Session, m *discordgo.MessageCreate) {
 	serverDownMatch := serverDownPattern.MatchString(output)
 	if serverDownMatch {
 		output = gopherutils.Redify(output)
+	} else if strings.HasPrefix(output, "SUCCESS") {
+		output = gopherutils.Greenify(output)
 	}
 	s.ChannelMessageSend(m.ChannelID, output)
 }
