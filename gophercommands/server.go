@@ -11,7 +11,6 @@ import (
 )
 
 func ServerStatus(s *discordgo.Session, m *discordgo.MessageCreate) {
-	s.ChannelMessageSend(m.ChannelID, "Checking the status of the server...")
 	cmd := exec.Command("/home/kevinfengcs88/go/src/gopherbot/shell/server.sh", "status")
 
 	stdout, err := cmd.CombinedOutput()

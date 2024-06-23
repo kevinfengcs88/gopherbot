@@ -22,10 +22,10 @@ status() {
     status_check=$(tasklist.exe | grep "SonsOfTheForestDS.exe")
     if [ -n "$status_check" ]; then
         echo "Server status: UP"
-        echo "$(date '+%Y-%m-%d %H:%M:%S') gopherbot Server status: UP" >> "$log_file"
+        echo "$(date '+%Y-%m-%d %H:%M:%S') gopherbot (LOG) Server status: UP" >> "$log_file"
     else
         echo "Server status: DOWN"
-        echo "$(date '+%Y-%m-%d %H:%M:%S') gopherbot Server status: DOWN" >> "$log_file"
+        echo "$(date '+%Y-%m-%d %H:%M:%S') gopherbot (LOG) Server status: DOWN" >> "$log_file"
     fi
     clean_log
 }

@@ -2,6 +2,7 @@ package gopherutils
 
 import (
 	"fmt"
+	// "regexp"
 	"strings"
 )
 
@@ -28,3 +29,11 @@ func Greenify(input string) string {
 	builder.WriteString("```")
 	return builder.String()
 }
+
+// func ParseLog(line string) string {
+// 	pattern := regexp.MustCompile(`\d{4}`)
+// 	return "foo"
+// }
+
+// func ParseServerProgress(line string) string {
+// }

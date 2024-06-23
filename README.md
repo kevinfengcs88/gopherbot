@@ -11,7 +11,6 @@ is emu, but in gopher form
     - status should also be logged
 - Make status for Up more accurate, based off of logs (currently the status shows up the moment the PID exists)
     - use fsnotify for this
-    - Maybe abstracted to a struct with a server status and a loading progress (0->100)
 - Use channels and goroutines for umm menu (so multiple users can use it)
 - Make output colors consistent (SUCCESS is still neutral text as an example)
 
