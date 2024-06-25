@@ -7,7 +7,10 @@ import (
 )
 
 func RemovePrefix(command string) string {
-	return command[1:]
+	if strings.HasPrefix(command, "!") || strings.HasPrefix(command, ".") {
+		return command[1:]
+	}
+	return command
 }
 
 func CleanedBytesToString(b []byte) string {

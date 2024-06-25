@@ -15,7 +15,6 @@ var serverScript string = "/home/kevinfengcs88/go/src/gopherbot/shell/server.sh"
 
 func ServerStatus(s *discordgo.Session, m *discordgo.MessageCreate) {
 	cmd := exec.Command(serverScript, "status")
-
 	stdout, err := cmd.CombinedOutput()
 
 	if err != nil {
@@ -37,7 +36,6 @@ func ServerStatus(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 func ProbingServerStatus(s *discordgo.Session, m *discordgo.MessageCreate) bool {
 	cmd := exec.Command(serverScript, "status")
-
 	stdout, err := cmd.CombinedOutput()
 
 	if err != nil {
