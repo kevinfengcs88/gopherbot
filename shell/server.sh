@@ -34,6 +34,7 @@ status() {
 log_pipe() {
     while IFS= read -r line; do
         echo "$(date '+%Y-%m-%d %H:%M:%S') $line" >> "$log_file"
+        clean_log
     done < "$fifo_file"
 
     wait
@@ -60,6 +61,7 @@ start() {
 }
 
 stop() {
+    log_check
     status_check=$(tasklist.exe | grep "SonsOfTheForestDS.exe")
     if [ -n "$status_check" ]; then
         log_check
