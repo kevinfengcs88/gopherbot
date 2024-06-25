@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
-	"strings"
 	"syscall"
 
 	"gopherbot/gophercommands"
@@ -51,7 +50,7 @@ func main() {
 
 func handleMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
 	// Ignore all messages created by the bot itself
-	if m.Author.ID == s.State.User.ID && !strings.HasPrefix(m.Content, "!") {
+	if m.Author.ID == s.State.User.ID {
 		return
 	}
 

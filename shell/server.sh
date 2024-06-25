@@ -1,6 +1,7 @@
 #!/bin/bash
 
 log_file="$(pwd)/logs/sotf.log"
+fifo_file="/tmp/server_output_fifo"
 
 usage() {
     echo "Usage: $0 {status|start|stop}"
@@ -30,6 +31,15 @@ status() {
     clean_log
 }
 
+log_pipe() {
+    while IFS= read -r line; do
+        echo "$(date '+%Y-%m-%d %H:%M:%S') $line" >> "$log_file"
+    done < "$fifo_file"
+
+    wait
+    clean_log
+}
+
 start() {
     # cd /mnt/c/Users/Kevin/Desktop/sotf/server && cmd.exe /c StartSOTFDedicated.bat
 
@@ -38,7 +48,6 @@ start() {
         echo "The server is already up"
     else
         log_check
-        fifo_file="/tmp/server_output_fifo"
 
         if [[ ! -p "$fifo_file" ]]; then
             mkfifo "$fifo_file"
@@ -46,12 +55,7 @@ start() {
 
         (cd /mnt/c/Users/Kevin/Desktop/sotf/server && cmd.exe /c StartSOTFDedicated.bat > "$fifo_file" 2>&1) &
 
-        while IFS= read -r line; do
-            echo "$(date '+%Y-%m-%d %H:%M:%S') $line" >> "$log_file"
-        done < "$fifo_file"
-
-        wait
-        clean_log
+        log_pipe
     fi
 }
 
