@@ -5,12 +5,62 @@ import (
 )
 
 func TestRemovePrefix(t *testing.T) {
-	got := RemovePrefix("!ping")
-	want := "ping"
+	t.Run("bang prefix", func(t *testing.T) {
+		got := RemovePrefix("!ping")
+		want := "ping"
 
-	if got != want {
-		t.Errorf("got %q want %q", got, want)
-	}
+		if got != want {
+			t.Errorf("got %q want %q", got, want)
+		}
+	})
+	t.Run("dot prefix", func(t *testing.T) {
+		got := RemovePrefix(".ping")
+		want := "ping"
+
+		if got != want {
+			t.Errorf("got %q want %q", got, want)
+		}
+	})
+	t.Run("no prefix", func(t *testing.T) {
+		got := RemovePrefix("ping")
+		want := "ping"
+
+		if got != want {
+			t.Errorf("got %q want %q", got, want)
+		}
+	})
+	t.Run("misc prefix", func(t *testing.T) {
+		got := RemovePrefix("#ping")
+		want := "#ping"
+
+		if got != want {
+			t.Errorf("got %q want %q", got, want)
+		}
+	})
+	t.Run("empty input", func(t *testing.T) {
+		got := RemovePrefix("")
+		want := ""
+
+		if got != want {
+			t.Errorf("got %q want %q", got, want)
+		}
+	})
+	t.Run("one space", func(t *testing.T) {
+		got := RemovePrefix(" ")
+		want := " "
+
+		if got != want {
+			t.Errorf("got %q want %q", got, want)
+		}
+	})
+	t.Run("multiple spaces", func(t *testing.T) {
+		got := RemovePrefix("   ")
+		want := "   "
+
+		if got != want {
+			t.Errorf("got %q want %q", got, want)
+		}
+	})
 }
 
 func TestRedify(t *testing.T) {
