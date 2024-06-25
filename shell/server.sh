@@ -66,7 +66,6 @@ stop() {
         stdout=$(taskkill.exe /IM SonsOfTheForestDS.exe /F)
         echo "$stdout"
         echo "$(date '+%Y-%m-%d %H:%M:%S') gopherbot (LOG) $stdout" >> "$log_file"
-        echo "================================================================================================================================================================" >> "$log_file"
         clean_log
     else
         echo "The server is already down"
